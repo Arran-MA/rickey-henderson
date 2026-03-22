@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rickey Henderson Fan Club</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #c8a84b;
+      --dark-green: #003831;
+      --kelly-green: #006633;
+      --white: #f5f5f0;
+      --gray: #888;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #0a0a0a;
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--dark-green) 0%, #001a14 60%, #000 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,168,75,0.12) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .jersey-number {
+      font-size: clamp(8rem, 20vw, 16rem);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 3px var(--gold);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      opacity: 0.25;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .club-badge {
+      display: inline-block;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .first {
+      display: block;
+      color: var(--white);
+    }
+
+    .hero h1 .last {
+      display: block;
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      margin-top: 1.5rem;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: rgba(245,245,240,0.65);
+      max-width: 500px;
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #000;
+      font-weight: 700;
+      border: 2px solid var(--gold);
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--gold);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(245,245,240,0.4);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--white);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0.4;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: var(--white);
+      animation: scrollPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.2; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.3); }
+    }
+
+    /* STATS BANNER */
+    .stats-banner {
+      background: var(--gold);
+      color: #000;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 0.75rem 2.5rem;
+      border-right: 1px solid rgba(0,0,0,0.2);
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+      opacity: 0.75;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(245,245,240,0.8);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p strong {
+      color: var(--white);
+    }
+
+    .quote-block {
+      border-left: 4px solid var(--gold);
+      padding: 1.5rem 2rem;
+      background: rgba(200,168,75,0.07);
+      margin-top: 1rem;
+    }
+
+    .quote-block blockquote {
+      font-size: 1.2rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--white);
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    /* RECORDS GRID */
+    .records-bg {
+      background: #060f0a;
+    }
+
+    .records-section {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .records-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .record-card {
+      border: 1px solid rgba(200,168,75,0.25);
+      padding: 2rem 1.75rem;
+      position: relative;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .record-card:hover {
+      border-color: var(--gold);
+      background: rgba(200,168,75,0.05);
+    }
+
+    .record-card .record-num {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .record-card .record-title {
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+      color: var(--white);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .record-card .record-desc {
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      color: rgba(245,245,240,0.55);
+      line-height: 1.5;
+    }
+
+    .record-card .tag {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      background: var(--dark-green);
+      color: var(--gold);
+      border: 1px solid rgba(200,168,75,0.3);
+    }
+
+    /* CAREER TIMELINE */
+    .timeline {
+      margin-top: 2.5rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.45rem;
+      top: 0.4rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid #0a0a0a;
+    }
+
+    .timeline-year {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .timeline-event {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+      color: var(--white);
+    }
+
+    .timeline-detail {
+      font-size: 0.85rem;
+      color: rgba(245,245,240,0.55);
+      margin-top: 0.25rem;
+      line-height: 1.5;
+    }
+
+    /* FAN GALLERY / QUOTES */
+    .quotes-bg {
+      background: linear-gradient(to bottom, #060f0a, #0a0a0a);
+    }
+
+    .quotes-section {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .fan-quote {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 2rem;
+    }
+
+    .fan-quote p {
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(245,245,240,0.75);
+    }
+
+    .fan-quote .fan-name {
+      margin-top: 1.2rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark-green);
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(200,168,75,0.2);
+    }
+
+    footer .footer-number {
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--gold);
+      opacity: 0.3;
+      line-height: 1;
+    }
+
+    footer p {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: rgba(245,245,240,0.4);
+      letter-spacing: 0.1em;
+    }
+
+    footer .footer-tagline {
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(245,245,240,0.6);
+      margin-top: 0.5rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .stat-item {
+        padding: 0.75rem 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="jersey-number">24</div>
+    <div class="hero-content">
+      <div class="club-badge">Official Fan Club</div>
+      <h1>
+        <span class="first">Rickey</span>
+        <span class="last">Henderson</span>
+      </h1>
+      <p class="hero-subtitle">"If my uniform doesn't get dirty, I haven't done anything in the baseball game."</p>
+      <div class="hero-cta">
+        <a href="#records" class="btn btn-primary">The Records</a>
+        <a href="#career" class="btn btn-outline">His Career</a>
+      </div>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </header>
+
+  <!-- STATS BANNER -->
+  <div class="stats-banner">
+    <div class="stat-item">
+      <div class="stat-number">1,406</div>
+      <div class="stat-label">Career Stolen Bases</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">2,295</div>
+      <div class="stat-label">Career Runs</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">3,055</div>
+      <div class="stat-label">Career Hits</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">81.4%</div>
+      <div class="stat-label">Hall of Fame Vote</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">25</div>
+      <div class="stat-label">MLB Seasons</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">The Man. The Legend.</p>
+    <h2 class="section-title">Who Is<br/>Rickey Henderson?</h2>
+    <div class="divider"></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          Born on Christmas Day, 1958, in Chicago, Illinois, <strong>Rickey Henley Henderson</strong> grew up to become the greatest leadoff hitter in baseball history — a force of nature at the top of the lineup for 25 seasons across nine teams.
+        </p>
+        <p>
+          He made his MLB debut with the Oakland Athletics in 1979 and would go on to rewrite the record books. A menace on the basepaths, a disciplined hitter with genuine power, and an outfielder with a cannon for an arm, Rickey was a five-tool player who made every single at-bat — and every moment on base — must-see television.
+        </p>
+        <p>
+          He was inducted into the <strong>Baseball Hall of Fame in 2009</strong>, receiving votes on 94.8% of ballots — one of the highest percentages in history.
+        </p>
+      </div>
+      <div>
+        <div class="quote-block">
+          <blockquote>"Rickey Henderson is the greatest player I've ever seen in my life. He could run, hit for average, hit for power, and play outstanding defense. He was the complete package."</blockquote>
+          <cite>— Tony La Russa, Hall of Fame Manager</cite>
+        </div>
+        <div class="quote-block" style="margin-top:1rem;">
+          <blockquote>"Don't talk to Rickey when Rickey is hitting. Rickey is thinking."</blockquote>
+          <cite>— Rickey Henderson (referring to himself)</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECORDS -->
+  <div class="records-bg" id="records">
+    <div class="records-section">
+      <p class="section-label">By The Numbers</p>
+      <h2 class="section-title">The Records</h2>
+      <div class="divider"></div>
+      <div class="records-grid">
+        <div class="record-card">
+          <div class="record-num">1,406</div>
+          <div class="record-title">All-Time Stolen Bases</div>
+          <div class="record-desc">Nearly 500 more than second place. A record that may never be broken.</div>
+          <span class="tag">MLB Record</span>
+        </div>
+        <div class="record-card">
+          <div class="record-num">130</div>
+          <div class="record-title">Stolen Bases in a Season</div>
+          <div class="record-desc">Set in 1982 with the Oakland A's, shattering Lou Brock's previous record of 118.</div>
+          <span class="tag">MLB Record</span>
+        </div>
+        <div class="record-card">
+          <div class="record-num">2,295</div>
+          <div class="record-title">Career Runs Scored</div>
+          <div class="record-desc">The all-time leader in runs, surpassing Ty Cobb's long-standing record in 2001.</div>
+          <span class="tag">MLB Record</span>
+        </div>
+        <div class="record-card">
+          <div class="record-num">2,190</div>
+          <div class="record-title">Career Walks</div>
+          <div class="record-desc">One of the most patient and disciplined hitters ever to stand in the batter's box.</div>
+          <span class="tag">MLB Record</span>
+        </div>
+        <div class="record-card">
+          <div class="record-num">81</div>
+          <div class="record-title">Lead-off Home Runs</div>
+          <div class="record-desc">The all-time record for home runs to lead off the very first pitch of a game.</div>
+          <span class="tag">MLB Record</span>
+        </div>
+        <div class="record-card">
+          <div class="record-num">10×</div>
+          <div class="record-title">All-Star Selections</div>
+          <div class="record-desc">A dominant force recognized by fans and peers across four different decades.</div>
+          <span class="tag">Career Honor</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAREER TIMELINE -->
+  <section id="career">
+    <p class="section-label">A 25-Year Journey</p>
+    <h2 class="section-title">Career<br/>Timeline</h2>
+    <div class="divider"></div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1979</div>
+        <div class="timeline-event">MLB Debut — Oakland Athletics</div>
+        <div class="timeline-detail">Debuted at age 20, immediately flashing the speed and instincts that would define his career.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1980</div>
+        <div class="timeline-event">100 Stolen Bases — First Time</div>
+        <div class="timeline-detail">Stole 100 bases in a single season for the first time, announcing himself to the baseball world.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1982</div>
+        <div class="timeline-event">Breaks Single-Season SB Record</div>
+        <div class="timeline-detail">Stole 130 bases, obliterating Lou Brock's record of 118 set in 1974.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1985</div>
+        <div class="timeline-event">Traded to the New York Yankees</div>
+        <div class="timeline-detail">Joined the Bronx Bombers in one of the most high-profile trades of the decade.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1989</div>
+        <div class="timeline-event">Returns to Oakland — World Series Champion</div>
+        <div class="timeline-detail">Won the World Series with the A's, sweeping the San Francisco Giants in the earthquake-delayed series.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1990</div>
+        <div class="timeline-event">AL MVP Award</div>
+        <div class="timeline-detail">Won the American League Most Valuable Player award, cementing his status as the game's best player.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1991</div>
+        <div class="timeline-event">All-Time Stolen Base Record</div>
+        <div class="timeline-detail">Surpassed Lou Brock's all-time stolen base record of 938. Lou Brock was in the stands to witness it.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2001</div>
+        <div class="timeline-event">All-Time Runs Scored Record</div>
+        <div class="timeline-detail">Broke Ty Cobb's career runs scored record, set back in 1928, crossing the plate for the 2,246th time.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2003</div>
+        <div class="timeline-event">Final MLB Season</div>
+        <div class="timeline-detail">Played his final MLB game at age 44, finishing a 25-year career that touched nine franchises.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2009</div>
+        <div class="timeline-event">Baseball Hall of Fame Induction</div>
+        <div class="timeline-detail">Inducted on 94.8% of ballots — one of the greatest induction percentages in Hall of Fame history.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAN QUOTES -->
+  <div class="quotes-bg">
+    <div class="quotes-section">
+      <p class="section-label">From Fellow Fans</p>
+      <h2 class="section-title">Why We<br/>Love Rickey</h2>
+      <div class="divider"></div>
+      <div class="quotes-grid">
+        <div class="fan-quote">
+          <p>"Watching Rickey get on base was like watching a chess grandmaster. He didn't just run — he made the entire defense rethink everything they were doing."</p>
+          <div class="fan-name">— Oakland A's Fan Since 1980</div>
+        </div>
+        <div class="fan-quote">
+          <p>"No one in baseball history changed a game simply by reaching first base. Rickey didn't just steal bases — he stole games, momentum, and the other team's will to fight."</p>
+          <div class="fan-name">— Lifelong Baseball Historian</div>
+        </div>
+        <div class="fan-quote">
+          <p>"He's the reason I fell in love with baseball. Pure electric excitement every single time he stepped to the plate or set foot on the basepaths."</p>
+          <div class="fan-name">— Fan Since Age Seven</div>
+        </div>
+        <div class="fan-quote">
+          <p>"The fact that his records may stand forever isn't just about the numbers — it's about how he combined elite speed, elite discipline, and elite baseball IQ. Truly one of a kind."</p>
+          <div class="fan-name">— New York Yankees Fan</div>
+        </div>
+        <div class="fan-quote">
+          <p>"Rickey referring to himself in the third person was perfectly on brand. A man that good is allowed to have that kind of swagger. He earned every bit of it."</p>
+          <div class="fan-name">— Baseball Stats Enthusiast</div>
+        </div>
+        <div class="fan-quote">
+          <p>"My grandfather and I used to watch Rickey together. He'd say, 'See that? That's what greatness looks like.' Forty years later, I still think he was right."</p>
+          <div class="fan-name">— Second-Generation Fan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-number">#24</div>
+    <p class="footer-tagline">"Rickey don't like it when Rickey can't run."</p>
+    <p style="margin-top:1.5rem;">Rickey Henderson Fan Club &nbsp;·&nbsp; Est. 1979 &nbsp;·&nbsp; Oakland, California</p>
+    <p>The Man of Steal &nbsp;·&nbsp; Hall of Fame Class of 2009</p>
+  </footer>
+
+</body>
+</html>
